@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="log.base" value="../logs" />
+	
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+            <pattern>[%-5p] %m - %d [%t] %c\(%M,%L\) %n</pattern>
+        </encoder>
+	</appender>
+	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.base}/emay.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${log.base}/emay.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 50MB -->
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>[%-5p] %m - %d [%t] %c\(%M,%L\) %n</pattern>
+		</encoder>
+	</appender>
+	<root level="debug">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+	</root>
+	
+	<logger name="org" level="ERROR" />
+
+	<logger name="com.mysql" level="ERROR" />
+	<logger name="io.netty" level="ERROR" />
+    <logger name="com.mchange" level="ERROR" />
+	<logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="ERROR" />
+	<logger name="com.lambdaworks.redis" level="ERROR" />
+</configuration>
+
